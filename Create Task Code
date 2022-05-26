@@ -1,0 +1,83 @@
+var icons = ["icon://fa-hand-rock-o", "icon://fa-hand-paper-o", "icon://fa-hand-scissors-o"];
+
+
+var choices = ["Rock", "Paper", "Scissors"];
+
+
+var playerScore = 0;
+var computerScore = 0;
+
+onEvent("rockButton","click",function(){
+  updateScreen("Rock");
+});
+
+
+onEvent("paperButton","click",function(){
+  updateScreen("Paper");
+});
+
+
+onEvent("scissorsButton","click",function(){
+  updateScreen("Scissors");
+});
+
+function updateScreen(playerChoice){
+  
+  var computerChoice = randomChoose(choices);
+  var winner = decideWinner(playerChoice, computerChoice);
+
+  setProperty("playerOutput","image",findIcon(playerChoice));
+  setProperty("computerOutput","image",findIcon(computerChoice));
+
+  if(winner == "Draw"){
+    setProperty("gameText","text","Is it about drive or power!?");
+  } else if (winner == "Player") {
+    setProperty("gameText","text","Good job! Can u get the 1,000 win record?");
+    playerScore++;
+    setProperty("playerScoreOutput","text",playerScore);
+  } else if (winner == "Computer") {
+    setProperty("gameText","text","Hint: Green is the way to go!");
+    computerScore++;
+    setProperty("computerScoreOutput","text",computerScore);    
+  }
+}
+
+function findIcon(iconName){
+    var currentIcon = "";
+    if (iconName == "Rock") {
+      currentIcon = icons[0];
+    } else if ((iconName == "Paper")) {
+      currentIcon = icons[1];
+    } else if ((iconName == "Scissors")) {
+      currentIcon = icons[2];
+    }
+    return currentIcon;
+}
+
+function randomChoose(list){
+    return list[0];
+}
+
+function decideWinner(playerChoice, computerChoice){
+  var result = "Draw";
+  if (playerChoice == "Rock") {
+    if (computerChoice == "Scissors") {
+      result = "Player";
+    } else if ((computerChoice == "Paper")) {
+      result = "Player";
+    }
+  } else if ((playerChoice == "Paper")) {
+    if (computerChoice == "Rock") {
+      result = "Player";
+    } else if ((computerChoice == "Scissors")) {
+      result = "Computer";
+    }
+  } else if ((playerChoice == "Scissors")) {
+    if (computerChoice == "Paper") {
+      result = "Player";
+    } else if ((computerChoice == "Rock")) {
+      result = "Computer";
+    }
+  }
+  return result;
+}
